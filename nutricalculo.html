@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriCalc - Calculadora Nutricional Personalizada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+        }
+        .result-card {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .input-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .input-range::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <header class="gradient-bg text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h1 class="text-4xl font-bold mb-2">NutriCalc</h1>
+                    <p class="text-xl opacity-90">Sua calculadora nutricional personalizada</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#calculator" class="bg-white text-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition">Calcular Agora</a>
+                    <a href="#about" class="border border-white px-6 py-2 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition">Sobre</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        <section id="calculator" class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Calculadora Nutricional</h2>
+            
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden max-w-4xl mx-auto">
+                <div class="md:flex">
+                    <div class="md:w-1/2 p-8 gradient-bg text-white">
+                        <h3 class="text-2xl font-bold mb-4">Seus Dados</h3>
+                        <p class="mb-6">Preencha as informações abaixo para receber um plano nutricional personalizado de acordo com suas necessidades.</p>
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            <p class="text-sm opacity-90">Todos os cálculos são baseados em diretrizes da OMS e NIH.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/2 p-8">
+                        <form id="nutritionForm" class="space-y-6">
+                            <div>
+                                <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Sexo</label>
+                                <div class="flex space-x-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="gender" value="male" checked class="h-4 w-4 text-blue-600">
+                                        <span class="ml-2 text-gray-700">Masculino</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="gender" value="female" class="h-4 w-4 text-blue-600">
+                                        <span class="ml-2 text-gray-700">Feminino</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="age" class="block text-sm font-medium text-gray-700 mb-1">Idade (anos)</label>
+                                <input type="number" id="age" min="12" max="100" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            
+                            <div>
+                                <label for="height" class="block text-sm font-medium text-gray-700 mb-1">Altura (cm)</label>
+                                <input type="number" id="height" min="120" max="250" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            
+                            <div>
+                                <label for="weight" class="block text-sm font-medium text-gray-700 mb-1">Peso (kg)</label>
+                                <input type="number" id="weight" min="30" max="200" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            
+                            <div>
+                                <label for="activity" class="block text-sm font-medium text-gray-700 mb-1">Nível de Atividade</label>
+                                <select id="activity" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                                    <option value="1.2">Sedentário (pouco ou nenhum exercício)</option>
+                                    <option value="1.375">Levemente ativo (exercício leve 1-3 dias/semana)</option>
+                                    <option value="1.55" selected>Moderadamente ativo (exercício moderado 3-5 dias/semana)</option>
+                                    <option value="1.725">Muito ativo (exercício intenso 6-7 dias/semana)</option>
+                                    <option value="1.9">Extremamente ativo (exercício muito intenso e trabalho físico)</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label for="goal" class="block text-sm font-medium text-gray-700 mb-1">Objetivo</label>
+                                <select id="goal" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" required>
+                                    <option value="lose">Perder peso</option>
+                                    <option value="maintain" selected>Manter peso</option>
+                                    <option value="gain">Ganhar peso/massa muscular</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" class="w-full gradient-bg text-white py-3 px-4 rounded-md font-semibold hover:opacity-90 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                Calcular Minhas Necessidades
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="results" class="hidden max-w-4xl mx-auto mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Seu Plano Nutricional</h2>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="result-card bg-white p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-fire text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-500">Calorias Diárias</h3>
+                            <p id="calories" class="text-2xl font-bold text-gray-800">0 kcal</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600">Quantidade de calorias que você deve consumir diariamente para alcançar seu objetivo.</p>
+                </div>
+                
+                <div class="result-card bg-white p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-dumbbell text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-500">Proteínas</h3>
+                            <p id="protein" class="text-2xl font-bold text-gray-800">0g</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600">Quantidade ideal de proteínas para manter ou construir massa muscular.</p>
+                </div>
+                
+                <div class="result-card bg-white p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-yellow-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-bread-slice text-yellow-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-500">Carboidratos</h3>
+                            <p id="carbs" class="text-2xl font-bold text-gray-800">0g</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600">Quantidade recomendada de carboidratos para energia e desempenho.</p>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="result-card bg-white p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-oil-can text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-500">Gorduras</h3>
+                            <p id="fats" class="text-2xl font-bold text-gray-800">0g</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600">Quantidade saudável de gorduras para funções hormonais e absorção de nutrientes.</p>
+                </div>
+                
+                <div class="result-card bg-white p-6 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-tint text-red-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-500">Água</h3>
+                            <p id="water" class="text-2xl font-bold text-gray-800">0L</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600">Quantidade diária recomendada de água para hidratação ideal.</p>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl mb-8">
+                <h3 class="text-xl font-bold mb-4 text-gray-800">Recomendações Personalizadas</h3>
+                <div id="recommendations" class="space-y-4">
+                    <!-- Recommendations will be added here by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button id="printBtn" class="bg-blue-600 text-white py-2 px-6 rounded-md font-medium hover:bg-blue-700 transition mr-4">
+                    <i class="fas fa-print mr-2"></i>Imprimir Plano
+                </button>
+                <button id="resetBtn" class="bg-gray-200 text-gray-800 py-2 px-6 rounded-md font-medium hover:bg-gray-300 transition">
+                    <i class="fas fa-redo mr-2"></i>Refazer Cálculo
+                </button>
+            </div>
+        </section>
+        
+        <section id="about" class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Sobre a NutriCalc</h2>
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <div class="md:flex">
+                    <div class="md:w-1/2 mb-6 md:mb-0 md:pr-6">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">Como Funciona</h3>
+                        <p class="text-gray-600 mb-4">A NutriCalc utiliza fórmulas científicas reconhecidas para calcular suas necessidades nutricionais diárias com base em seus dados pessoais e objetivos.</p>
+                        <p class="text-gray-600">Nossos cálculos consideram:</p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1 text-gray-600">
+                            <li>Taxa Metabólica Basal (TMB)</li>
+                            <li>Nível de atividade física</li>
+                            <li>Objetivo de peso (perder, manter ou ganhar)</li>
+                            <li>Distribuição ideal de macronutrientes</li>
+                        </ul>
+                    </div>
+                    <div class="md:w-1/2 md:pl-6">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">Nossa Abordagem</h3>
+                        <p class="text-gray-600 mb-4">Acreditamos em uma abordagem equilibrada para nutrição, focada em saúde sustentável e resultados a longo prazo.</p>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-800 mb-2">Lembre-se:</h4>
+                            <p class="text-blue-700 text-sm">Estes resultados são estimativas gerais. Para um plano totalmente personalizado, consulte um nutricionista profissional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="md:flex md:justify-between">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-xl font-bold mb-2">NutriCalc</h3>
+                    <p class="text-gray-400">Sua saúde em primeiro lugar.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-sm font-semibold uppercase tracking-wider mb-4">Links</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Início</a></li>
+                            <li><a href="#calculator" class="text-gray-400 hover:text-white transition">Calculadora</a></li>
+                            <li><a href="#about" class="text-gray-400 hover:text-white transition">Sobre</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold uppercase tracking-wider mb-4">Contato</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-envelope mr-2 text-gray-400"></i>
+                                <span class="text-gray-400">contato@nutricalc.com</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400 text-sm">
+                <p>© 2023 NutriCalc. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('nutritionForm');
+            const resultsSection = document.getElementById('results');
+            const resetBtn = document.getElementById('resetBtn');
+            const printBtn = document.getElementById('printBtn');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const gender = document.querySelector('input[name="gender"]:checked').value;
+                const age = parseInt(document.getElementById('age').value);
+                const height = parseInt(document.getElementById('height').value);
+                const weight = parseInt(document.getElementById('weight').value);
+                const activity = parseFloat(document.getElementById('activity').value);
+                const goal = document.getElementById('goal').value;
+                
+                // Calculate BMR (Basal Metabolic Rate)
+                let bmr;
+                if (gender === 'male') {
+                    bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+                } else {
+                    bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+                }
+                
+                // Calculate TDEE (Total Daily Energy Expenditure)
+                const tdee = bmr * activity;
+                
+                // Adjust calories based on goal
+                let calories;
+                if (goal === 'lose') {
+                    calories = tdee - 500; // 500 calorie deficit for weight loss
+                } else if (goal === 'gain') {
+                    calories = tdee + 500; // 500 calorie surplus for weight gain
+                } else {
+                    calories = tdee; // maintenance
+                }
+                
+                // Calculate macronutrients (40% carbs, 30% protein, 30% fat as default)
+                const proteinGrams = Math.round((calories * 0.3) / 4);
+                const carbsGrams = Math.round((calories * 0.4) / 4);
+                const fatsGrams = Math.round((calories * 0.3) / 9);
+                
+                // Calculate water intake (35ml per kg of body weight)
+                const waterIntake = Math.round((weight * 35) / 1000 * 10) / 10;
+                
+                // Display results
+                document.getElementById('calories').textContent = Math.round(calories) + ' kcal';
+                document.getElementById('protein').textContent = proteinGrams + 'g';
+                document.getElementById('carbs').textContent = carbsGrams + 'g';
+                document.getElementById('fats').textContent = fatsGrams + 'g';
+                document.getElementById('water').textContent = waterIntake + 'L';
+                
+                // Generate recommendations
+                const recommendations = document.getElementById('recommendations');
+                recommendations.innerHTML = '';
+                
+                const generalTips = [
+                    'Consuma proteínas em todas as refeições para manter a saciedade e a massa muscular.',
+                    'Priorize carboidratos complexos como grãos integrais, legumes e vegetais.',
+                    'Inclua gorduras saudáveis como abacate, nozes, azeite de oliva e peixes gordurosos.',
+                    'Beba água regularmente ao longo do dia, não apenas quando sentir sede.',
+                    'Consuma pelo menos 5 porções de frutas e vegetais diariamente.'
+                ];
+                
+                const weightLossTips = [
+                    'Foque em alimentos ricos em fibras para aumentar a saciedade.',
+                    'Reduza o consumo de alimentos processados e açúcares adicionados.',
+                    'Pratique o controle de porções usando pratos menores.',
+                    'Mantenha um diário alimentar para aumentar a conscientização.'
+                ];
+                
+                const weightGainTips = [
+                    'Aumente a frequência das refeições para 3 vezes ao dia.',
+                    'Inclua lanches calóricos e nutritivos entre as refeições principais.',
+                    'Priorize alimentos densos em nutrientes em vez de calorias vazias.',
+                    'Combine treinamento de força com aumento calórico para ganho muscular.'
+                ];
+                
+                // Add general tips
+                generalTips.forEach(tip => {
+                    const tipElement = document.createElement('div');
+                    tipElement.className = 'flex items-start';
+                    tipElement.innerHTML = `
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="bg-blue-100 p-1 rounded-full">
+                                <i class="fas fa-check text-blue-600 text-xs"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-gray-700">${tip}</p>
+                        </div>
+                    `;
+                    recommendations.appendChild(tipElement);
+                });
+                
+                // Add goal-specific tips
+                const goalTips = goal === 'lose' ? weightLossTips : (goal === 'gain' ? weightGainTips : []);
+                goalTips.forEach(tip => {
+                    const tipElement = document.createElement('div');
+                    tipElement.className = 'flex items-start';
+                    tipElement.innerHTML = `
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="bg-green-100 p-1 rounded-full">
+                                <i class="fas fa-bullseye text-green-600 text-xs"></i>
+                            </div>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-gray-700">${tip}</p>
+                        </div>
+                    `;
+                    recommendations.appendChild(tipElement);
+                });
+                
+                // Show results section
+                resultsSection.classList.remove('hidden');
+                
+                // Scroll to results
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            resetBtn.addEventListener('click', function() {
+                form.reset();
+                resultsSection.classList.add('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            printBtn.addEventListener('click', function() {
+                window.print();
+            });
+        });
+    </script>
+</body>
+</html>
